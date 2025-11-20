@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Link from 'next/link';
 
 /**
  * MemeCard Component
@@ -38,9 +39,11 @@ export default function MemeCard({
 
   return (
     <div className="card">
-      <div className="card-image">
-        <img src={imageUri} alt={name} />
-      </div>
+      <Link href={`/meme/${symbol}`} className="card-link">
+        <div className="card-image">
+          <img src={imageUri} alt={name} />
+        </div>
+      </Link>
       
       <div className="card-content">
         <div className="card-header">
@@ -84,13 +87,18 @@ export default function MemeCard({
             min="0.001"
             step="0.001"
           />
-          <button onClick={handleOpenPosition} className="btn btn-primary">
-            Open Position
-          </button>
+          <div className="action-buttons">
+            <button onClick={handleOpenPosition} className="btn btn-long">
+              Open Long
+            </button>
+            <button onClick={() => console.log('Close long')} className="btn btn-close">
+              Close Long
+            </button>
+          </div>
         </div>
 
         <div className="card-footer">
-          <small>Virtual exposure • Settled in ETH</small>
+          <small>Virtual exposure only • No ERC20 tokens • No liquidity pools</small>
         </div>
       </div>
 
@@ -106,6 +114,11 @@ export default function MemeCard({
         .card:hover {
           transform: translateY(-5px);
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-link {
+          display: block;
+          cursor: pointer;
         }
 
         .card-image {
@@ -176,12 +189,13 @@ export default function MemeCard({
 
         .card-actions {
           display: flex;
-          gap: 0.5rem;
+          flex-direction: column;
+          gap: 0.75rem;
           margin-bottom: 1rem;
         }
 
         .input {
-          flex: 1;
+          width: 100%;
           padding: 0.75rem;
           border: 2px solid #e5e7eb;
           border-radius: 10px;
@@ -194,24 +208,40 @@ export default function MemeCard({
           border-color: #667eea;
         }
 
+        .action-buttons {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem;
+        }
+
         .btn {
-          padding: 0.75rem 1.5rem;
+          padding: 0.75rem 1rem;
           border: none;
           border-radius: 10px;
-          font-size: 1rem;
+          font-size: 0.95rem;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.2s;
         }
 
-        .btn-primary {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .btn-long {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           color: white;
         }
 
-        .btn-primary:hover {
+        .btn-long:hover {
           transform: scale(1.05);
-          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+          box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-close {
+          background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+          color: white;
+        }
+
+        .btn-close:hover {
+          transform: scale(1.05);
+          box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
         }
 
         .card-footer {

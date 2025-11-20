@@ -10,6 +10,7 @@ export default function CreateMeme() {
   const [formData, setFormData] = useState({
     name: '',
     symbol: '',
+    description: '',
     imageUri: '',
   });
 
@@ -18,10 +19,10 @@ export default function CreateMeme() {
     console.log('Creating meme:', formData);
     // Will be connected to MemeRegistry contract in production
     setIsOpen(false);
-    setFormData({ name: '', symbol: '', imageUri: '' });
+    setFormData({ name: '', symbol: '', description: '', imageUri: '' });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -67,16 +68,33 @@ export default function CreateMeme() {
                   name="symbol"
                   value={formData.symbol}
                   onChange={handleChange}
-                  placeholder="e.g., MOON"
+                  placeholder="e.g., MOON (3-5 letters)"
                   required
                   className="input"
-                  maxLength={10}
+                  minLength={3}
+                  maxLength={5}
                 />
-                <small>Unique identifier (max 10 characters)</small>
+                <small>3-5 letters, unique identifier</small>
               </div>
 
               <div className="form-group">
-                <label htmlFor="imageUri">Image URI</label>
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  placeholder="What makes this meme special?"
+                  required
+                  className="textarea"
+                  rows={3}
+                  maxLength={200}
+                />
+                <small>Max 200 characters</small>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="imageUri">Upload Image (Optional)</label>
                 <input
                   type="url"
                   id="imageUri"
@@ -84,21 +102,23 @@ export default function CreateMeme() {
                   value={formData.imageUri}
                   onChange={handleChange}
                   placeholder="ipfs://... or https://..."
-                  required
                   className="input"
                 />
                 <small>IPFS or permanent storage link</small>
               </div>
 
               <div className="form-info">
-                <p>
-                  ⚠️ Creating a meme requires a small creation fee in ETH
+                <p className="info-title">
+                  ⚠️ Important: This does NOT create a token
                 </p>
                 <p>
-                  ✅ No tokens are created - only a registry entry
+                  ✅ This only registers a virtual meme asset in the Memeth Registry
                 </p>
                 <p>
-                  ✅ Image data is permanent and immutable
+                  ✅ No ERC20 tokens. No liquidity pools. Pure virtual exposure.
+                </p>
+                <p>
+                  💰 Small creation fee required to prevent spam
                 </p>
               </div>
 
@@ -111,7 +131,7 @@ export default function CreateMeme() {
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Create Meme
+                  Create Meme Asset
                 </button>
               </div>
             </form>
@@ -225,16 +245,37 @@ export default function CreateMeme() {
           border-color: #667eea;
         }
 
+        .textarea {
+          padding: 0.75rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 10px;
+          font-size: 1rem;
+          outline: none;
+          transition: border-color 0.2s;
+          resize: vertical;
+          font-family: inherit;
+        }
+
+        .textarea:focus {
+          border-color: #667eea;
+        }
+
         .form-info {
-          background: #f3f4f6;
+          background: #fef3c7;
+          border: 2px solid #fbbf24;
           padding: 1rem;
           border-radius: 10px;
           font-size: 0.9rem;
         }
 
+        .form-info .info-title {
+          font-weight: 700;
+          color: #92400e;
+        }
+
         .form-info p {
           margin: 0.5rem 0;
-          color: #555;
+          color: #78350f;
         }
 
         .form-actions {
