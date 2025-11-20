@@ -1,4 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config();
+
+const { getHardhatNetworkConfig } = require("./config/networks");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -18,20 +21,51 @@ module.exports = {
     artifacts: "./artifacts"
   },
   networks: {
+    // Local Hardhat Network
     hardhat: {
-      chainId: 1337
+      chainId: 31337
     },
-    // Add L1 and L2 networks as needed
-    // mainnet: { ... },
-    // base: { ... },
-    // arbitrum: { ... },
-    // optimism: { ... },
+    
+    // Ethereum Mainnet (L1 - Settlement Layer)
+    mainnet: getHardhatNetworkConfig("mainnet"),
+    
+    // Ethereum Sepolia (L1 Testnet - Default for development)
+    sepolia: getHardhatNetworkConfig("sepolia"),
+    
+    // Base Mainnet (L2 - User Interaction Layer)
+    base: getHardhatNetworkConfig("base"),
+    
+    // Base Sepolia (L2 Testnet - Development)
+    baseSepolia: getHardhatNetworkConfig("baseSepolia"),
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY || "",
+      sepolia: process.env.ETHERSCAN_API_KEY || "",
+      base: process.env.BASESCAN_API_KEY || "",
+      baseSepolia: process.env.BASESCAN_API_KEY || "",
+    },
+    customChains: [
+      {
+        network: "base",
+        chainId: 8453,
+        urls: {
+          apiURL: "https://api.basescan.org/api",
+          browserURL: "https://basescan.org"
+        }
+      },
+      {
+        network: "baseSepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org"
+        }
+      }
+    ]
   },
 };
