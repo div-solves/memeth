@@ -1,0 +1,20 @@
+{
+  "name": "memeth",
+  "version": "1.0.0",
+  "description": "memeth - the end of trading scams",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "node compile.js",
+    "deploy": "hardhat run scripts/deploy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "hardhat": "^2.27.0",
+    "solc": "^0.8.26"
+  }
+}
