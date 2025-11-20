@@ -5,6 +5,8 @@ node_modules/
 artifacts/
 cache/
 typechain-types/
+*.abi
+*.bin
 
 # Environment variables
 .env
