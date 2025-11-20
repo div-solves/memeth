@@ -79,20 +79,57 @@ export default function Home() {
         {/* Hero Section */}
         <section className="hero-section">
           <h1 className="hero-title">
-            The Virtual Meme-Market<br />
+            Memeth – Virtual Meme Markets<br />
             <span className="hero-title-highlight">on Ethereum</span>
           </h1>
           <p className="hero-subtitle">
-            Trade meme-exposure without tokens, without rugs, without scams.<br />
-            <strong>ETH in. ETH out. Pure virtual markets. Pure fun.</strong>
+            Trade meme exposure without tokens, without liquidity pools, without rugs.<br />
+            <strong>ETH in. ETH out. Pure virtual long positions.</strong>
           </p>
           <div className="hero-cta">
             <button className="cta-button cta-primary">
-              Open App
+              Launch App
             </button>
             <button className="cta-button cta-secondary">
-              How It Works
+              What is Memeth?
             </button>
+          </div>
+        </section>
+
+        {/* Value Proposition Section */}
+        <section className="value-props">
+          <div className="value-grid">
+            <div className="value-card">
+              <div className="value-icon">🛡</div>
+              <h3 className="value-title">No Tokens</h3>
+              <p className="value-description">
+                No ERC20 tokens. No supply. Nothing to rug.
+              </p>
+            </div>
+            
+            <div className="value-card">
+              <div className="value-icon">⚡</div>
+              <h3 className="value-title">Zero Slippage</h3>
+              <p className="value-description">
+                Virtual exposure engine – instant trades, no AMMs required.
+              </p>
+            </div>
+            
+            <div className="value-card">
+              <div className="value-icon">💎</div>
+              <h3 className="value-title">ETH Settlement</h3>
+              <p className="value-description">
+                All positions settle directly in ETH.
+              </p>
+            </div>
+            
+            <div className="value-card">
+              <div className="value-icon">🔥</div>
+              <h3 className="value-title">Meme-Native</h3>
+              <p className="value-description">
+                Fun, fast, community-driven synthetic meme markets.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -104,35 +141,26 @@ export default function Home() {
               <div className="step-number">1</div>
               <h3 className="step-title">Deposit ETH</h3>
               <p className="step-description">
-                Funds are held in a secure on-chain treasury.
+                Your ETH sits in a secure on-chain treasury.
               </p>
             </div>
             
             <div className="step">
               <div className="step-number">2</div>
-              <h3 className="step-title">Trade Meme-Exposure</h3>
+              <h3 className="step-title">Trade Virtual Exposure</h3>
               <p className="step-description">
-                No tokens. No AMMs. No LP. Just virtual long/close positions.
+                Open and close long positions on meme assets.
               </p>
             </div>
             
             <div className="step">
               <div className="step-number">3</div>
-              <h3 className="step-title">Withdraw ETH with PnL</h3>
+              <h3 className="step-title">Withdraw ETH</h3>
               <p className="step-description">
-                Your profit/loss is settled directly in ETH.
+                PnL is calculated and returned in ETH.
               </p>
             </div>
           </div>
-        </section>
-
-        {/* Create Meme Section */}
-        <section className="create-section" id="create">
-          <h2 className="section-title">Create Your Meme</h2>
-          <p className="section-subtitle">
-            Register a virtual meme asset. No ERC20 tokens. Just pure exposure.
-          </p>
-          <CreateMeme />
         </section>
 
         {/* Meme Gallery Section */}
@@ -148,29 +176,13 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-section">
-            <h3 className="footer-title">MEMETH</h3>
-            <p className="footer-tagline">Virtual Meme Market Engine</p>
-          </div>
-          
-          <div className="footer-section">
-            <p className="footer-text">Built on Ethereum</p>
-            <p className="footer-text">No tokens. No rugs. No scams.</p>
-          </div>
-          
-          <div className="footer-section">
-            <Link 
-              href="https://github.com/div-solves/memeth" 
-              target="_blank" 
-              className="footer-link"
-            >
-              GitHub
-            </Link>
-            <Link href="#" className="footer-link">
-              Documentation
-            </Link>
-          </div>
+        <div className="footer-main">
+          <p className="footer-headline">
+            Built on Ethereum – Virtual Meme Market Engine
+          </p>
+          <p className="footer-tagline">
+            No tokens. No rugs. Pure virtual exposure.
+          </p>
         </div>
         
         <div className="footer-bottom">
@@ -312,6 +324,50 @@ export default function Home() {
           background: rgba(255, 255, 255, 0.3);
         }
 
+        /* Value Proposition Section */
+        .value-props {
+          padding: 0 0 2rem;
+        }
+
+        .value-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 1.5rem;
+        }
+
+        .value-card {
+          background: white;
+          border-radius: 15px;
+          padding: 2rem;
+          text-align: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s;
+        }
+
+        .value-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .value-icon {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+        }
+
+        .value-title {
+          font-size: 1.3rem;
+          font-weight: 700;
+          color: #333;
+          margin-bottom: 0.75rem;
+        }
+
+        .value-description {
+          font-size: 0.95rem;
+          color: #666;
+          line-height: 1.5;
+          margin: 0;
+        }
+
         /* How It Works Section */
         .how-it-works {
           background: white;
@@ -374,16 +430,6 @@ export default function Home() {
           line-height: 1.6;
         }
 
-        /* Create Section */
-        .create-section {
-          background: white;
-          border-radius: 20px;
-          padding: 3rem 2rem;
-          margin: 3rem 0;
-          text-align: center;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
         /* Meme Gallery */
         .meme-gallery {
           background: white;
@@ -409,46 +455,23 @@ export default function Home() {
           margin-top: 4rem;
         }
 
-        .footer-content {
+        .footer-main {
           max-width: 1400px;
           margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 2rem;
+          text-align: center;
           margin-bottom: 2rem;
         }
 
-        .footer-section {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        .footer-title {
-          font-size: 1.5rem;
-          font-weight: 900;
-          margin: 0;
+        .footer-headline {
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin: 0 0 0.5rem 0;
         }
 
         .footer-tagline {
-          font-size: 0.9rem;
-          opacity: 0.8;
-        }
-
-        .footer-text {
-          font-size: 0.9rem;
+          font-size: 1rem;
           opacity: 0.9;
           margin: 0;
-        }
-
-        .footer-link {
-          font-size: 0.9rem;
-          opacity: 0.9;
-          transition: opacity 0.2s;
-        }
-
-        .footer-link:hover {
-          opacity: 1;
         }
 
         .footer-bottom {
@@ -494,9 +517,8 @@ export default function Home() {
             grid-template-columns: 1fr;
           }
 
-          .footer-content {
+          .value-grid {
             grid-template-columns: 1fr;
-            text-align: center;
           }
         }
       `}</style>
