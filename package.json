@@ -1,20 +1,43 @@
 {
   "name": "memeth",
-  "version": "1.0.0",
-  "description": "memeth - the end of trading scams",
+  "version": "0.1.0",
+  "description": "MEMETH - The ETH-Native Virtual Meme Market. No rugpulls, no scams, only fair exposure.",
   "main": "index.js",
   "scripts": {
-    "test": "hardhat test",
-    "compile": "node compile.js",
-    "deploy": "hardhat run scripts/deploy.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "compile:contracts": "hardhat compile",
+    "test:contracts": "hardhat test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "ethereum",
+    "meme",
+    "web3",
+    "defi",
+    "virtual-market"
+  ],
+  "author": "MEMETH Team",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "@openzeppelin/contracts": "^5.4.0",
-    "hardhat": "^2.27.0",
-    "solc": "^0.8.26"
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "typescript": "^5.0.0",
+    "eslint": "^8.50.0",
+    "eslint-config-next": "^14.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

@@ -1,53 +1,79 @@
-# memeth - The End of Trading Scams
+# 🚀 MEMETH - The End of Trading Scams
 
-**memeth** is an Ethereum-based memecoin trading simulator platform that revolutionizes the memecoin trading experience by eliminating the risks of rugpulls, scam tokens, and wallet-draining attacks.
+**The ETH-Native Virtual Meme Market**
 
-## 🎯 Core Concept
+> No Tokens • No Rugpulls • No Bullshit
 
-memeth implements "Mimik-Trade" - a simulated trading system where:
-- Users deposit **ETH only**
-- All trading is simulated (no actual token purchases)
-- Profits and losses are settled in **ETH only**
-- Users can open LONG or SHORT positions on memecoins
-- Leverage up to 10x available
+MEMETH is a revolutionary platform that enables meme culture exposure without the risks of traditional meme tokens. By using virtual positions settled in ETH, we eliminate rugpulls, scam tokens, liquidity pool drains, and all the typical Web3 scams.
 
-## ✨ Key Benefits
+## 🎯 Core Principles
 
-### Security
-- ❌ **No Rugpulls** - No actual tokens are purchased
-- ❌ **No Scam Tokens** - Platform-controlled memecoin listings
-- ❌ **No Wallet Draining** - Smart contract protected funds
-- ✅ **Secure Gaming** - Community-driven memecoin trading fun
+- ✅ **All value stays in ETH** - No fake tokens that can be rugpulled
+- ✅ **Virtual exposure only** - Mathematical modeling instead of token trading
+- ✅ **Transparent settlements** - Everything happens on L1
+- ✅ **No bonding curves** - No manipulated pricing mechanisms
+- ✅ **No liquidity pools** - Nothing to drain or exploit
+- ✅ **Security first** - Honest, fair, and transparent
 
-### Performance
-- ⚡ **Minimal Gas Fees** - Only deposit/withdrawal/position operations
-- ⚡ **Ultra-Fast Execution** - Instant position opening/closing
-- ⚡ **No Slippage** - Positions execute at current price
+## 🏗️ Architecture
 
-## 🏗️ Smart Contract Architecture
+### Smart Contracts (`/contracts`)
 
-### MemethPlatform Contract
+**MemethTreasury.sol**
+- L1 settlement layer
+- Holds all ETH deposits
+- Processes position settlements
+- Minimalistic and secure
 
-The main contract implements:
+**MemeRegistry.sol**
+- Tracks meme metadata
+- NO token creation
+- Immutable cultural data
+- Creation fee mechanism
 
-#### Position Management
-- Open LONG/SHORT positions with 1-10x leverage
-- Close positions to realize profits/losses
-- Track all user positions
-- Automatic liquidation handling
+### Offchain Engine (`/engine`)
 
-#### Memecoin Registry
-- Owner-managed memecoin listings
-- Real-time price updates
-- Symbol and name tracking
+**pricing.ts**
+- Mathematical price calculations
+- No manipulation, pure formulas
+- Exposure-based pricing
+- Activity scoring
 
-#### Fund Management
-- ETH deposits via `deposit()` or direct transfer
-- ETH withdrawals with balance verification
-- Position collateral locking
-- Profit/loss settlement
+**exposure.ts**
+- Position management
+- Virtual P&L calculations
+- Portfolio tracking
+- Risk validation
 
-## 📦 Installation
+**simulation.ts**
+- Market scenario testing
+- Risk analysis
+- Value at Risk (VaR)
+- Position sizing suggestions
+
+**index.ts**
+- Engine initialization
+- Configuration management
+- Status monitoring
+
+### Frontend (`/frontend`)
+
+**Next.js-based UI inspired by pump.fun**
+- Meme cards with live stats
+- Position opening interface
+- Create meme flow
+- Portfolio dashboard
+- Clean, modern design
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js >= 18.0.0
+- npm or yarn
+- Ethereum wallet (for testing)
+
+### Installation
 
 ```bash
 # Clone the repository
@@ -57,170 +83,120 @@ cd memeth
 # Install dependencies
 npm install
 
-# Compile contracts
-npm run compile
+# Compile smart contracts
+npm run compile:contracts
 
-# Run tests
-npm test
+# Run frontend development server
+cd frontend
+npm run dev
 ```
 
-## 🧪 Testing
-
-The platform includes comprehensive test coverage:
+### Running Tests
 
 ```bash
-npm test
+# Test smart contracts
+npm run test:contracts
+
+# Type check
+npm run type-check
+
+# Lint code
+npm run lint
 ```
 
-Tests cover:
-- Deployment and initialization
-- Deposits and withdrawals
-- Memecoin management
-- Position opening and closing
-- Profit/loss calculations
-- Security features (reentrancy protection)
-- Edge cases and error handling
+## 📁 Project Structure
 
-## 🚀 Deployment
-
-Deploy to a network:
-
-```bash
-# Local Hardhat network
-npx hardhat node
-
-# In another terminal, deploy
-npm run deploy
-
-# Deploy to specific network
-npm run deploy -- --network <network-name>
+```
+memeth/
+├── contracts/              # Solidity smart contracts
+│   ├── MemethTreasury.sol # L1 treasury contract
+│   └── MemeRegistry.sol   # Meme registry
+│
+├── engine/                # Offchain calculation engine
+│   ├── pricing.ts         # Price calculations
+│   ├── exposure.ts        # Position management
+│   ├── simulation.ts      # Risk simulation
+│   └── index.ts           # Engine entry point
+│
+├── frontend/              # Next.js frontend
+│   ├── pages/             # Page components
+│   ├── components/        # React components
+│   └── public/            # Static assets
+│
+├── ARCHITECT_BRIEFING.md  # Full system design document
+├── package.json           # Project dependencies
+├── tsconfig.json          # TypeScript configuration
+├── hardhat.config.js      # Hardhat configuration
+└── README.md              # This file
 ```
 
-## 💡 Usage Examples
+## 🧮 How It Works
 
-### For Users
+### 1. Meme Creation
+Users create memes in the registry (small ETH fee). No tokens are minted - only metadata is stored.
 
-1. **Deposit ETH**
-```javascript
-await memethPlatform.deposit({ value: ethers.parseEther("1.0") });
-```
+### 2. Opening Positions
+Users deposit ETH and open virtual exposure positions on memes they believe in.
 
-2. **Open a LONG Position**
-```javascript
-// Position on DOGE with 0.1 ETH at 5x leverage
-await memethPlatform.openPosition("DOGE", 0, ethers.parseEther("0.1"), 5);
-```
+### 3. Price Dynamics
+Prices are calculated mathematically based on:
+- Total exposure
+- Activity score
+- Volatility
+- Market dynamics
 
-3. **Open a SHORT Position**
-```javascript
-// Short position on SHIB with 0.2 ETH at 3x leverage
-await memethPlatform.openPosition("SHIB", 1, ethers.parseEther("0.2"), 3);
-```
-
-4. **Close a Position**
-```javascript
-await memethPlatform.closePosition(positionId);
-```
-
-5. **Withdraw ETH**
-```javascript
-await memethPlatform.withdraw(ethers.parseEther("0.5"));
-```
-
-### For Platform Owner
-
-1. **Add a Memecoin**
-```javascript
-await memethPlatform.addMemecoin(
-  "PEPE",                           // Symbol
-  "Pepe",                           // Name
-  ethers.parseEther("0.000001")     // Initial price
-);
-```
-
-2. **Update Price**
-```javascript
-await memethPlatform.updatePrice("PEPE", ethers.parseEther("0.000002"));
-```
-
-## 📊 Contract Functions
-
-### User Functions
-
-| Function | Description |
-|----------|-------------|
-| `deposit()` | Deposit ETH to the platform |
-| `withdraw(amount)` | Withdraw ETH from balance |
-| `openPosition(symbol, type, amount, leverage)` | Open a trading position |
-| `closePosition(positionId)` | Close and settle a position |
-| `getUserOpenPositions(user)` | Get all open positions for a user |
-| `getBalance(user)` | Check user's available balance |
-| `calculateProfitLoss(positionId, exitPrice)` | Calculate P/L for a position |
-
-### Owner Functions
-
-| Function | Description |
-|----------|-------------|
-| `addMemecoin(symbol, name, price)` | Add new memecoin to platform |
-| `updatePrice(symbol, price)` | Update memecoin price |
-
-### View Functions
-
-| Function | Description |
-|----------|-------------|
-| `getPrice(symbol)` | Get current price of a memecoin |
-| `getAllMemecoins()` | Get list of all memecoins |
-| `positions(id)` | Get details of a position |
-| `memecoins(symbol)` | Get memecoin data |
+### 4. Settlement
+When users close positions, P&L is calculated and settled in ETH through the L1 treasury.
 
 ## 🔒 Security Features
 
-- **ReentrancyGuard**: Protection against reentrancy attacks
-- **Ownable**: Access control for administrative functions
-- **Input Validation**: Comprehensive checks on all parameters
-- **Safe Math**: Built-in overflow protection (Solidity 0.8+)
-- **Liquidation Protection**: Automatic loss capping at position amount
+- **No token contracts** - Can't be exploited or rugpulled
+- **No liquidity pools** - Nothing to drain
+- **L1 settlement** - Maximum security and transparency
+- **Minimalistic contracts** - Less code = less attack surface
+- **No admin keys for funds** - User funds are always safe
+- **Transparent accounting** - All balances visible on-chain
 
-## 🎮 How It Works
+## 🌍 Network Support
 
-### Position Profit/Loss Calculation
+- **L1 (Ethereum)** - Treasury and final settlement
+- **L2 (Base, Arbitrum, Optimism)** - User interactions and social layer
 
-**LONG Position:**
-- Profit when price increases
-- Loss when price decreases
-- Formula: `(exitPrice - entryPrice) / entryPrice * amount * leverage`
+## 📊 Roadmap
 
-**SHORT Position:**
-- Profit when price decreases
-- Loss when price increases
-- Formula: `(entryPrice - exitPrice) / entryPrice * amount * leverage`
-
-### Example Trade
-
-1. User deposits 1 ETH
-2. Opens LONG position: 0.1 ETH on DOGE at 0.0001 ETH, 5x leverage
-3. Price doubles to 0.0002 ETH
-4. Profit: `(0.0002 - 0.0001) / 0.0001 * 0.1 * 5 = 0.5 ETH`
-5. Close position: User gets back 0.1 ETH + 0.5 ETH profit = 0.6 ETH
-6. Final balance: 0.9 ETH + 0.6 ETH = 1.5 ETH
-
-## 🛣️ Roadmap
-
-- [ ] Oracle integration for real memecoin prices
-- [ ] Frontend web application
-- [ ] Multiple position types (limit orders, stop-loss)
-- [ ] Leaderboard and statistics
-- [ ] Social features and community voting
-- [ ] Mobile app
-
-## 📄 License
-
-ISC
+- [x] Core architecture design
+- [x] Smart contract scaffolding
+- [x] Offchain engine implementation
+- [x] Frontend UI scaffolding
+- [ ] Contract testing and auditing
+- [ ] L2 bridge integration
+- [ ] Frontend integration with contracts
+- [ ] Testnet deployment
+- [ ] Security audit
+- [ ] Mainnet launch
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please read our [ARCHITECT_BRIEFING.md](./ARCHITECT_BRIEFING.md) to understand the system design and principles.
+
+### Development Principles
+
+1. **Security above all** - No shortcuts on security
+2. **Transparency** - All mechanisms must be clear
+3. **User protection** - Never compromise user safety
+4. **Honesty** - No misleading features or marketing
+5. **Simplicity** - Keep it minimal and maintainable
+
+## 📜 License
+
+MIT License - See LICENSE file for details
 
 ## ⚠️ Disclaimer
 
-This platform is for entertainment and educational purposes. Trading memecoins carries risk. Only trade with funds you can afford to lose.
+MEMETH is experimental software. Use at your own risk. This is not financial advice. All positions are virtual exposure and should be treated as speculative.
+
+---
+
+**Built with ❤️ for the Ethereum community**
+
+*Ending trading scams, one meme at a time.*
