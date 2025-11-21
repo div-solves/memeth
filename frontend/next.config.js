@@ -1,21 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Configure for static export if needed
-  // output: 'export',
+  // Enable static export for Hostinger deployment
+  output: 'export',
   images: {
-    // Configure image patterns for security
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'ipfs.io',
-      },
-      {
-        protocol: 'https',
-        hostname: 'gateway.pinata.cloud',
-      },
-    ],
+    // Use unoptimized for static export
+    unoptimized: true,
   },
+  // Trailing slash for better static hosting compatibility
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;
