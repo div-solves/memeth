@@ -80,7 +80,11 @@ MEMETH is a revolutionary platform that enables meme culture exposure without th
 git clone https://github.com/div-solves/memeth.git
 cd memeth
 
-# Install dependencies
+# Install root dependencies (contracts, engine)
+npm install
+
+# Install frontend dependencies
+cd frontend
 npm install
 
 # Compile smart contracts
@@ -89,6 +93,17 @@ npm run compile:contracts
 # Run frontend development server
 cd frontend
 npm run dev
+```
+
+### Building for Production
+
+```bash
+# Build frontend for production
+cd frontend
+npm run build
+
+# The static export will be in frontend/out/ directory
+# Ready for deployment to any static hosting service
 ```
 
 ### Running Tests
@@ -162,15 +177,83 @@ When users close positions, P&L is calculated and settled in ETH through the L1 
 - **L1 (Ethereum)** - Treasury and final settlement
 - **L2 (Base, Arbitrum, Optimism)** - User interactions and social layer
 
+## 🚢 Deployment
+
+### Frontend Deployment (Hostinger or Static Hosting)
+
+The frontend is configured for static export and can be deployed to any static hosting service:
+
+```bash
+# Build the static export
+cd frontend
+npm run build
+
+# The 'out' directory contains all static files
+# Upload the contents to your hosting provider
+```
+
+#### Hostinger Deployment Steps
+
+1. **Build locally:**
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+2. **Upload to Hostinger:**
+   - Use Hostinger's File Manager or FTP client
+   - Upload all files from `frontend/out/` to your `public_html` directory
+   - Ensure all files and folders are uploaded
+
+3. **Configure .htaccess for client-side routing:**
+   Create or update `.htaccess` in `public_html`:
+   ```apache
+   <IfModule mod_rewrite.c>
+     RewriteEngine On
+     RewriteBase /
+     RewriteRule ^index\.html$ - [L]
+     RewriteCond %{REQUEST_FILENAME} !-f
+     RewriteCond %{REQUEST_FILENAME} !-d
+     RewriteCond %{REQUEST_FILENAME} !-l
+     RewriteRule . /index.html [L]
+   </IfModule>
+   ```
+
+4. **Test your deployment** by visiting your domain
+
+For detailed deployment instructions, see [frontend/README.md](./frontend/README.md)
+
+### Contract Deployment
+
+Smart contracts can be deployed to various networks:
+
+```bash
+# Deploy to Sepolia testnet
+npm run deploy:sepolia
+
+# Deploy to Base Sepolia testnet
+npm run deploy:baseSepolia
+
+# Deploy to local Hardhat network
+npm run deploy:local
+```
+
 ## 📊 Roadmap
 
 - [x] Core architecture design
 - [x] Smart contract scaffolding
 - [x] Offchain engine implementation
 - [x] Frontend UI scaffolding
+- [x] **Complete trading platform UI** ✨
+  - [x] Memecoin gallery with filters/search
+  - [x] Create memecoin page with image upload
+  - [x] Trading interface with charts
+  - [x] 0.5% platform fee integration
+  - [x] Trade history and analytics
+  - [x] Static export for deployment
 - [ ] Contract testing and auditing
-- [ ] L2 bridge integration
 - [ ] Frontend integration with contracts
+- [ ] L2 bridge integration
 - [ ] Testnet deployment
 - [ ] Security audit
 - [ ] Mainnet launch

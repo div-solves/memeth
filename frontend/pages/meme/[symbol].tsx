@@ -2,38 +2,44 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useState } from 'react';
+import CoinStats from '../../components/CoinStats';
+import TradingChart from '../../components/TradingChart';
+import TradeForm from '../../components/TradeForm';
+import TradeHistory from '../../components/TradeHistory';
 
 /**
  * Meme Detail Page
- * Shows individual meme details with trading interface
+ * Enhanced with full trading platform features
+ * 
+ * Features:
+ * - Comprehensive coin statistics
+ * - Interactive trading chart with time intervals
+ * - Trade form with 0.5% fee calculation
+ * - Per-coin trade history
+ * 
+ * TODO: Connect to contract for real data
  */
 export default function MemeDetail() {
   const router = useRouter();
   const { symbol } = router.query;
-  const [amount, setAmount] = useState('');
 
-  // Mock data - will be replaced with real contract data
+  // Mock data - TODO: Replace with real contract data
   const meme = {
     name: "Moon Dog",
-    symbol: symbol || "MOON",
+    symbol: (symbol as string) || "MOON",
     imageUri: "/placeholder.png",
     currentPrice: 0.0001,
     priceChange24h: 125.5,
     totalExposure: 12.5,
     activityScore: 0.95,
+    holders: 234,
+    volume24h: 45.2,
     description: "The legendary Moon Dog, always reaching for the stars! 🚀",
+    // Mock position data for trade form
+    hasOpenPosition: false,
+    positionSize: 0,
+    entryPrice: 0,
   };
-
-  // Mock price history for chart
-  const priceHistory = [
-    { time: '00:00', price: 0.00008 },
-    { time: '04:00', price: 0.00009 },
-    { time: '08:00', price: 0.00012 },
-    { time: '12:00', price: 0.00011 },
-    { time: '16:00', price: 0.00013 },
-    { time: '20:00', price: 0.0001 },
-  ];
 
   return (
     <div className="container">
@@ -49,7 +55,9 @@ export default function MemeDetail() {
             MEMETH
           </Link>
           <div className="nav-links">
-            <Link href="/#explore" className="nav-link">← Back to Explore</Link>
+            <Link href="/" className="nav-link">Home</Link>
+            <Link href="/coins" className="nav-link">Coins</Link>
+            <Link href="/create" className="nav-link">Create</Link>
           </div>
           <div className="nav-wallet">
             <ConnectButton />
@@ -58,93 +66,53 @@ export default function MemeDetail() {
       </nav>
 
       <main className="main">
-        {/* Meme Header */}
+        {/* Meme Header with Image */}
         <section className="meme-header">
           <div className="meme-image">
             <img src={meme.imageUri} alt={meme.name} />
           </div>
           <div className="meme-info">
             <h1 className="meme-name">{meme.name}</h1>
-            <div className="meme-symbol">${meme.symbol}</div>
             <p className="meme-description">{meme.description}</p>
           </div>
         </section>
 
-        {/* Stats Grid */}
+        {/* Coin Statistics */}
         <section className="stats-section">
-          <div className="stat-card">
-            <div className="stat-label">Virtual Price</div>
-            <div className="stat-value">{meme.currentPrice.toFixed(6)} ETH</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-label">24h Change</div>
-            <div className={`stat-value ${meme.priceChange24h >= 0 ? 'positive' : 'negative'}`}>
-              {meme.priceChange24h >= 0 ? '+' : ''}{meme.priceChange24h.toFixed(2)}%
-            </div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-label">Total Exposure</div>
-            <div className="stat-value">{meme.totalExposure.toFixed(2)} ETH</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-label">Activity Score</div>
-            <div className="stat-value">
-              {'🔥'.repeat(Math.ceil(meme.activityScore * 5))}
-            </div>
-          </div>
+          <CoinStats
+            symbol={meme.symbol}
+            name={meme.name}
+            currentPrice={meme.currentPrice}
+            priceChange24h={meme.priceChange24h}
+            holders={meme.holders}
+            volume24h={meme.volume24h}
+            totalExposure={meme.totalExposure}
+            activityScore={meme.activityScore}
+          />
         </section>
 
-        {/* Price Chart (Mock) */}
+        {/* Trading Chart */}
         <section className="chart-section">
-          <h2 className="section-title">24h Engine Price Chart</h2>
-          <div className="chart-container">
-            <div className="chart">
-              {priceHistory.map((point, index) => (
-                <div key={index} className="chart-bar" style={{
-                  height: `${(point.price / 0.00015) * 100}%`
-                }}>
-                  <div className="chart-label">{point.time}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="chart-note">
-            (Mock chart - will be replaced with real-time price data)
-          </div>
+          <TradingChart
+            symbol={meme.symbol}
+            currentPrice={meme.currentPrice}
+          />
         </section>
 
-        {/* Trading Interface */}
-        <section className="trading-section">
-          <h2 className="section-title">Trade Virtual Exposure</h2>
+        {/* Trading and History Grid */}
+        <section className="trading-grid">
+          <div className="trading-column">
+            <TradeForm
+              symbol={meme.symbol}
+              currentPrice={meme.currentPrice}
+              hasOpenPosition={meme.hasOpenPosition}
+              positionSize={meme.positionSize}
+              entryPrice={meme.entryPrice}
+            />
+          </div>
           
-          <div className="trading-card">
-            <div className="input-group">
-              <label htmlFor="amount">Amount (ETH)</label>
-              <input
-                type="number"
-                id="amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="0.01"
-                min="0.001"
-                step="0.001"
-                className="amount-input"
-              />
-            </div>
-
-            <div className="button-group">
-              <button className="trade-button long">
-                Open Long Position
-              </button>
-              <button className="trade-button close">
-                Close Long Position
-              </button>
-            </div>
-
-            <div className="disclaimer">
-              <p>⚠️ Virtual exposure only. No ERC20 tokens. No liquidity pools.</p>
-              <p>All positions are settled directly in ETH.</p>
-            </div>
+          <div className="history-column">
+            <TradeHistory symbol={meme.symbol} maxTrades={10} />
           </div>
         </section>
       </main>
@@ -168,10 +136,13 @@ export default function MemeDetail() {
           background: rgba(255, 255, 255, 0.95);
           backdrop-filter: blur(10px);
           border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          position: sticky;
+          top: 0;
+          z-index: 100;
         }
 
         .nav-content {
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 1rem 2rem;
           display: flex;
@@ -189,23 +160,27 @@ export default function MemeDetail() {
         }
 
         .nav-links {
-          flex: 1;
-          margin-left: 2rem;
+          display: flex;
+          gap: 2rem;
         }
 
         .nav-link {
           color: #333;
           font-weight: 500;
+          transition: color 0.2s;
+          padding: 0.5rem 1rem;
+          border-radius: 8px;
         }
 
         .nav-link:hover {
           color: #667eea;
+          background: rgba(102, 126, 234, 0.1);
         }
 
         /* Main Content */
         .main {
           flex: 1;
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
           width: 100%;
           padding: 2rem;
@@ -214,7 +189,7 @@ export default function MemeDetail() {
         /* Meme Header */
         .meme-header {
           display: grid;
-          grid-template-columns: 300px 1fr;
+          grid-template-columns: 250px 1fr;
           gap: 2rem;
           background: white;
           border-radius: 20px;
@@ -224,8 +199,8 @@ export default function MemeDetail() {
         }
 
         .meme-image {
-          width: 300px;
-          height: 300px;
+          width: 250px;
+          height: 250px;
           border-radius: 15px;
           overflow: hidden;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -244,218 +219,39 @@ export default function MemeDetail() {
         }
 
         .meme-name {
-          font-size: 3rem;
+          font-size: 2.5rem;
           font-weight: 900;
           color: #333;
-          margin: 0 0 0.5rem 0;
-        }
-
-        .meme-symbol {
-          display: inline-block;
-          background: #667eea;
-          color: white;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          font-size: 1.2rem;
-          font-weight: 700;
-          width: fit-content;
-          margin-bottom: 1rem;
+          margin: 0 0 1rem 0;
         }
 
         .meme-description {
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           color: #666;
           line-height: 1.6;
         }
 
         /* Stats Section */
         .stats-section {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
           margin-bottom: 2rem;
-        }
-
-        .stat-card {
-          background: white;
-          border-radius: 15px;
-          padding: 1.5rem;
-          text-align: center;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-label {
-          font-size: 0.9rem;
-          color: #999;
-          margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #333;
-        }
-
-        .stat-value.positive {
-          color: #10b981;
-        }
-
-        .stat-value.negative {
-          color: #ef4444;
         }
 
         /* Chart Section */
         .chart-section {
-          background: white;
-          border-radius: 20px;
-          padding: 2rem;
           margin-bottom: 2rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .section-title {
-          font-size: 1.8rem;
-          font-weight: 700;
-          color: #333;
-          margin: 0 0 1.5rem 0;
-        }
-
-        .chart-container {
-          background: #f9fafb;
-          border-radius: 15px;
-          padding: 2rem;
-          height: 300px;
-          display: flex;
-          align-items: flex-end;
-        }
-
-        .chart {
-          display: flex;
-          gap: 1rem;
-          align-items: flex-end;
-          justify-content: space-around;
-          width: 100%;
-          height: 100%;
-        }
-
-        .chart-bar {
-          flex: 1;
-          background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-          border-radius: 8px 8px 0 0;
-          position: relative;
-          min-height: 20px;
-          transition: all 0.3s;
-        }
-
-        .chart-bar:hover {
-          opacity: 0.8;
-        }
-
-        .chart-label {
-          position: absolute;
-          bottom: -25px;
-          left: 50%;
-          transform: translateX(-50%);
-          font-size: 0.75rem;
-          color: #666;
-          white-space: nowrap;
-        }
-
-        .chart-note {
-          text-align: center;
-          font-size: 0.85rem;
-          color: #999;
-          margin-top: 2rem;
-          font-style: italic;
-        }
-
-        /* Trading Section */
-        .trading-section {
-          background: white;
-          border-radius: 20px;
-          padding: 2rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .trading-card {
-          max-width: 600px;
-          margin: 0 auto;
-        }
-
-        .input-group {
-          margin-bottom: 1.5rem;
-        }
-
-        .input-group label {
-          display: block;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 0.5rem;
-        }
-
-        .amount-input {
-          width: 100%;
-          padding: 1rem;
-          border: 2px solid #e5e7eb;
-          border-radius: 15px;
-          font-size: 1.2rem;
-          outline: none;
-          transition: border-color 0.2s;
-        }
-
-        .amount-input:focus {
-          border-color: #667eea;
-        }
-
-        .button-group {
+        /* Trading Grid */
+        .trading-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 1rem;
-          margin-bottom: 1.5rem;
+          gap: 2rem;
+          margin-bottom: 2rem;
         }
 
-        .trade-button {
-          padding: 1rem 2rem;
-          border: none;
-          border-radius: 15px;
-          font-size: 1.1rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s;
-        }
-
-        .trade-button.long {
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-          color: white;
-        }
-
-        .trade-button.long:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .trade-button.close {
-          background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-          color: white;
-        }
-
-        .trade-button.close:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-        }
-
-        .disclaimer {
-          background: #fef3c7;
-          border: 2px solid #fbbf24;
-          border-radius: 15px;
-          padding: 1rem;
-          text-align: center;
-        }
-
-        .disclaimer p {
-          margin: 0.5rem 0;
-          color: #78350f;
-          font-size: 0.9rem;
+        .trading-column,
+        .history-column {
+          min-height: 400px;
         }
 
         /* Footer */
@@ -477,27 +273,35 @@ export default function MemeDetail() {
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+          .trading-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
         @media (max-width: 768px) {
+          .nav-content {
+            flex-wrap: wrap;
+            gap: 1rem;
+          }
+
+          .nav-links {
+            order: 3;
+            width: 100%;
+            justify-content: center;
+          }
+
           .meme-header {
             grid-template-columns: 1fr;
           }
 
           .meme-image {
             width: 100%;
-            height: 300px;
-            margin: 0 auto;
+            height: 250px;
           }
 
           .meme-name {
             font-size: 2rem;
-          }
-
-          .button-group {
-            grid-template-columns: 1fr;
-          }
-
-          .stats-section {
-            grid-template-columns: repeat(2, 1fr);
           }
         }
       `}</style>

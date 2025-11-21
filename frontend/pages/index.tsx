@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import MemeCard from '../components/MemeCard';
-import CreateMeme from '../components/CreateMeme';
+import TradeHistory from '../components/TradeHistory';
 
 /**
  * Main landing page - MEMETH Virtual Meme Market MVP
@@ -62,8 +62,9 @@ export default function Home() {
           </Link>
           
           <div className="nav-links">
-            <Link href="#explore" className="nav-link">Explore</Link>
-            <Link href="#create" className="nav-link">Create Meme</Link>
+            <Link href="/" className="nav-link">Home</Link>
+            <Link href="/coins" className="nav-link">Coins</Link>
+            <Link href="/create" className="nav-link">Create</Link>
             <Link href="https://github.com/div-solves/memeth" target="_blank" className="nav-link">
               Docs
             </Link>
@@ -87,12 +88,16 @@ export default function Home() {
             <strong>ETH in. ETH out. Pure virtual long positions.</strong>
           </p>
           <div className="hero-cta">
-            <button className="cta-button cta-primary">
-              Launch App
-            </button>
-            <button className="cta-button cta-secondary">
-              What is Memeth?
-            </button>
+            <Link href="/coins">
+              <button className="cta-button cta-primary">
+                Explore Memecoins
+              </button>
+            </Link>
+            <Link href="/create">
+              <button className="cta-button cta-secondary">
+                Create Memecoin
+              </button>
+            </Link>
           </div>
         </section>
 
@@ -171,6 +176,18 @@ export default function Home() {
               <MemeCard key={meme.id} {...meme} />
             ))}
           </div>
+          <div className="view-all-container">
+            <Link href="/coins">
+              <button className="view-all-button">
+                View All Memecoins →
+              </button>
+            </Link>
+          </div>
+        </section>
+
+        {/* Global Trade History */}
+        <section className="trade-history-section">
+          <TradeHistory maxTrades={20} />
         </section>
       </main>
 
@@ -444,6 +461,33 @@ export default function Home() {
           grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
           gap: 2rem;
           margin-top: 2rem;
+        }
+
+        .view-all-container {
+          text-align: center;
+          margin-top: 2rem;
+        }
+
+        .view-all-button {
+          padding: 1rem 2.5rem;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          border-radius: 15px;
+          font-size: 1.1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+
+        .view-all-button:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Trade History Section */
+        .trade-history-section {
+          margin: 3rem 0;
         }
 
         /* Footer */
