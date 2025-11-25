@@ -149,7 +149,7 @@ npm run compile:contracts
 
 ### 3. Run Tests
 ```bash
-npm run test:contracts
+npm test
 ```
 
 ### 4. Start Frontend
@@ -359,7 +359,7 @@ memeth/
 **A**: Not yet. Security audit is planned in Phase 4 (weeks 14-16). Budget: $20K-$50K.
 
 ### Q: Which blockchain?
-**A**: Initially Ethereum L1. Then Base, Arbitrum, and Optimism (L2s) for lower gas.
+**A**: Base mainnet for optimal user experience with low gas costs.
 
 ### Q: Can I use this code?
 **A**: Yes! MIT licensed. Feel free to fork, modify, and deploy.
@@ -412,7 +412,7 @@ Before moving forward, make sure you:
 - [ ] Reviewed the roadmap (NEXT_STEPS.md)
 - [ ] Installed dependencies (`npm install`)
 - [ ] Compiled contracts (`npm run compile:contracts`)
-- [ ] Ran tests (`npm run test:contracts`)
+- [ ] Ran tests (`npm test`)
 - [ ] Explored the frontend (`npm run dev`)
 
 Once you've done this, you're ready to contribute! 🚀
@@ -446,6 +446,6 @@ MEMETH is not just another DeFi protocol. It's a new paradigm:
 
 ---
 
-*Last Updated: 2025-11-20*  
+*Last Updated: 2025-11-25*  
 *Repository Version: 0.1.0*  
-*Status: Ready for Integration Phase*
+*Status: Ready for Base Mainnet Deployment*
