@@ -4,55 +4,32 @@
 
 **ETH is the only real settlement asset. Everything else is virtual exposure.**
 
-MEMETH uses a **hybrid L1/L2 architecture**:
-- **L1 (Ethereum)**: Settlement layer - Final ETH settlements, treasury
-- **L2 (Base)**: User interaction layer - Position management, lower gas
+MEMETH is deployed on **Base mainnet** for optimal user experience:
+- **Base (L2)**: All operations - Position management, settlements, low gas costs
 
 ---
 
 ## 📊 Supported Networks
 
-### Development Networks (Default)
+### Production Network (Primary)
 
-#### 1. Ethereum Sepolia (L1 Testnet)
-- **Chain ID**: `11155111`
-- **Purpose**: L1 Settlement Layer (Testing)
-- **RPC**: `https://ethereum-sepolia-rpc.publicnode.com`
-- **Explorer**: https://sepolia.etherscan.io
-- **Faucet**: https://sepoliafaucet.com
-- **Gas**: Moderate (testnet)
-- **Use for**: Testing treasury settlements, final ETH transactions
-
-#### 2. Base Sepolia (L2 Testnet)
-- **Chain ID**: `84532`
-- **Purpose**: L2 User Interaction (Testing)
-- **RPC**: `https://sepolia.base.org`
-- **Explorer**: https://sepolia.basescan.org
-- **Faucet**: https://bridge.base.org/deposit (bridge from Sepolia)
-- **Gas**: Low (~10-100x cheaper than L1)
-- **Use for**: Testing user interactions, position management
+#### Base Mainnet
+- **Chain ID**: `8453`
+- **Purpose**: All platform operations
+- **RPC**: `https://mainnet.base.org`
+- **Explorer**: https://basescan.org
+- **Gas**: Low (~10-100x cheaper than Ethereum L1)
+- **Use for**: All user interactions, position management, settlements
+- **Status**: ✅ **Production ready**
 
 ---
 
-### Production Networks (Later)
+### Local Development
 
-#### 3. Ethereum Mainnet (L1 Production)
-- **Chain ID**: `1`
-- **Purpose**: L1 Settlement Layer (Production)
-- **RPC**: `https://eth.llamarpc.com`
-- **Explorer**: https://etherscan.io
-- **Gas**: High
-- **Use for**: Real ETH settlements, treasury operations
-- **Status**: ⚠️ **Configured but DO NOT deploy yet**
-
-#### 4. Base (L2 Production)
-- **Chain ID**: `8453`
-- **Purpose**: L2 User Interaction (Production)
-- **RPC**: `https://mainnet.base.org`
-- **Explorer**: https://basescan.org
-- **Gas**: Low (~10-100x cheaper than L1)
-- **Use for**: User interactions, position management
-- **Status**: ⚠️ **Configured but DO NOT deploy yet**
+#### Hardhat Local Network
+- **Chain ID**: `31337`
+- **Purpose**: Local testing and development
+- **Use for**: Contract testing, development
 
 ---
 
@@ -65,39 +42,31 @@ Central configuration file used by both Hardhat and frontend.
 **Key Functions**:
 - `getHardhatNetworkConfig(networkName)` - For contract deployment
 - `getWeb3ChainConfig(networkName)` - For frontend Web3
-- `getL1Networks()` - Get L1 networks (Ethereum)
-- `getL2Networks()` - Get L2 networks (Base)
-- `getTestnetNetworks()` - Get testnet networks
-- `getDefaultNetworks()` - Get default development networks
 
 **Features**:
 - Type-safe network mapping
 - RPC URL management
 - Chain ID constants
 - Block explorer links
-- Network metadata (isL1, isTestnet, purpose)
+- Network metadata
 
 ---
 
 ### 2. Hardhat Config (`hardhat.config.js`)
 
-Updated with all networks using shared config.
+Updated with Base mainnet configuration using shared config.
 
 **Networks configured**:
 ```javascript
 {
   hardhat: { chainId: 31337 },           // Local
-  sepolia: getHardhatNetworkConfig("sepolia"),
-  baseSepolia: getHardhatNetworkConfig("baseSepolia"),
-  mainnet: getHardhatNetworkConfig("mainnet"),
-  base: getHardhatNetworkConfig("base"),
+  base: getHardhatNetworkConfig("base"), // Base mainnet
 }
 ```
 
-**Etherscan verification**:
-- Supports Etherscan (Ethereum)
-- Supports Basescan (Base)
-- Custom chains configured for Base networks
+**Basescan verification**:
+- Supports Basescan for Base mainnet
+- Custom chains configured for verification
 
 ---
 
@@ -122,24 +91,18 @@ getNetworkLabel(chainId)        // UI label
 
 ---
 
-### 4. Environment Variables
+### 3. Environment Variables
 
 #### Root `.env`:
 ```bash
 DEPLOYER_PRIVATE_KEY=          # For deployment
-SEPOLIA_RPC_URL=               # Sepolia RPC
-BASE_SEPOLIA_RPC_URL=          # Base Sepolia RPC
-MAINNET_RPC_URL=               # Mainnet RPC (optional)
-BASE_RPC_URL=                  # Base RPC (optional)
-ETHERSCAN_API_KEY=             # For verification
-BASESCAN_API_KEY=              # For Base verification
+RPC_URL_BASE_MAINNET=          # Base mainnet RPC (optional, has default)
+BASESCAN_API_KEY=              # For contract verification
+REPORT_GAS=false               # Optional gas reporting
 ```
 
 #### Frontend `.env.local`:
 ```bash
-NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA=
-NEXT_PUBLIC_CONTRACT_ADDRESS_BASE_SEPOLIA=
-NEXT_PUBLIC_CONTRACT_ADDRESS_MAINNET=
 NEXT_PUBLIC_CONTRACT_ADDRESS_BASE=
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=
 ```
@@ -151,36 +114,22 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=
 ### Local Development
 ```bash
 # Start local Hardhat node
-npx hardhat node
+npm run node
 
 # Deploy to local network
 npx hardhat run scripts/deploy.js --network hardhat
 ```
 
-### Testnet Deployment (Current)
+### Production Deployment
 ```bash
-# Deploy to Sepolia (L1 Testnet)
-npx hardhat run scripts/deploy.js --network sepolia
+# Deploy to Base mainnet
+npm run deploy:baseMainnet
 
-# Deploy to Base Sepolia (L2 Testnet)
-npx hardhat run scripts/deploy.js --network baseSepolia
+# Verify on Basescan
+npm run verify:baseMainnet
 
-# Verify on Sepolia
-npx hardhat verify --network sepolia <CONTRACT_ADDRESS>
-
-# Verify on Base Sepolia
-npx hardhat verify --network baseSepolia <CONTRACT_ADDRESS>
-```
-
-### Production Deployment (Later!)
-```bash
-# ⚠️ DO NOT RUN THESE YET - Only after security audit!
-
-# Deploy to Ethereum Mainnet (L1)
-npx hardhat run scripts/deploy.js --network mainnet
-
-# Deploy to Base (L2)
-npx hardhat run scripts/deploy.js --network base
+# Console on Base mainnet
+npm run console:baseMainnet
 ```
 
 ---
@@ -194,39 +143,26 @@ npm run dev
 ```
 
 ### Connect to Networks
-The frontend automatically supports:
-- **Default (Development)**: Sepolia, Base Sepolia
-- **Available (Production)**: Mainnet, Base (marked as "later")
+The frontend is configured for Base mainnet:
+- **Production**: Base mainnet (Chain ID: 8453)
 
-Users can switch networks using their wallet's network selector.
+Users connect via their wallet to Base mainnet.
 
 ---
 
 ## 📋 Network Selection Guide
 
-### When to use each network:
-
-#### Use Sepolia when:
-- Testing L1 settlement logic
-- Testing treasury operations
-- Need final ETH settlements
-- Testing cross-chain bridges
-
-#### Use Base Sepolia when:
-- Testing user interactions
-- Testing position management
-- Want lower gas costs
-- Testing frequent transactions
-
-#### Use Mainnet when (later):
-- Production L1 settlements
-- Real ETH treasury operations
-- Maximum security required
-
-#### Use Base when (later):
-- Production user interactions
-- Lower gas for users
+### Use Base Mainnet for:
+- All production operations
+- User interactions
+- Position management
+- Low gas costs
 - Scalable operations
+
+### Use Hardhat local for:
+- Development testing
+- Contract development
+- Testing before deployment
 
 ---
 
@@ -237,38 +173,26 @@ Users can switch networks using their wallet's network selector.
 | Network | Chain ID | Type | Purpose | Gas Cost | Status |
 |---------|----------|------|---------|----------|--------|
 | Hardhat | 31337 | Local | Development | N/A | ✅ Ready |
-| Sepolia | 11155111 | L1 Testnet | Settlement Testing | Moderate | ✅ Ready |
-| Base Sepolia | 84532 | L2 Testnet | Interaction Testing | Low | ✅ Ready |
-| Mainnet | 1 | L1 | Settlement | High | ⚠️ Later |
-| Base | 8453 | L2 | Interaction | Low | ⚠️ Later |
+| Base | 8453 | L2 | Production | Low | ✅ Ready |
 
-### Network Relationships
+### Network Architecture
 
 ```
-                    TESTNET                         MAINNET
-                                                    
-┌─────────────────────────────┐      ┌─────────────────────────────┐
-│  Ethereum Sepolia (L1)      │      │  Ethereum Mainnet (L1)      │
-│  • Settlement Layer         │      │  • Settlement Layer         │
-│  • Treasury                 │      │  • Treasury                 │
-│  • Final ETH Settlements    │      │  • Final ETH Settlements    │
-└──────────────┬──────────────┘      └──────────────┬──────────────┘
-               │                                     │
-               │ Bridge                              │ Bridge
-               │                                     │
-┌──────────────┴──────────────┐      ┌──────────────┴──────────────┐
-│  Base Sepolia (L2)          │      │  Base (L2)                  │
-│  • User Interaction         │      │  • User Interaction         │
-│  • Position Management      │      │  • Position Management      │
-│  • Lower Gas Costs          │      │  • Lower Gas Costs          │
-└─────────────────────────────┘      └─────────────────────────────┘
+┌─────────────────────────────┐
+│  Base Mainnet (L2)          │
+│  • All Operations           │
+│  • Position Management      │
+│  • User Interaction         │
+│  • Low Gas Costs            │
+│  • ~10-100x cheaper than L1 │
+└─────────────────────────────┘
 ```
 
 ---
 
-## 🛠️ Adding New Networks (Future)
+## 🛠️ Future Network Support
 
-To add support for additional networks (e.g., Arbitrum, Optimism):
+If expanding to additional networks in the future (e.g., Arbitrum, Optimism):
 
 ### 1. Update `config/networks.js`
 ```javascript
@@ -320,11 +244,8 @@ Add RPC URLs and contract addresses for new network.
 - **Infura**: https://infura.io
 - **QuickNode**: https://www.quicknode.com
 
-### Block Explorers
-- **Etherscan**: https://etherscan.io
-- **Sepolia Etherscan**: https://sepolia.etherscan.io
+### Block Explorer
 - **Basescan**: https://basescan.org
-- **Base Sepolia**: https://sepolia.basescan.org
 
 ---
 
@@ -332,9 +253,9 @@ Add RPC URLs and contract addresses for new network.
 
 ### Private Keys
 - ⚠️ **NEVER** commit private keys to git
-- Use separate wallets for testnet and mainnet
-- Use test wallets with minimal funds for development
+- Use secure wallets with proper key management
 - Use hardware wallets or multi-sig for production
+- Implement proper access controls
 
 ### RPC URLs
 - Public RPCs may have rate limits
@@ -342,12 +263,12 @@ Add RPC URLs and contract addresses for new network.
 - Redundant RPC providers recommended
 
 ### Network Configuration
-- Always verify chain IDs before transactions
-- Double-check network before mainnet deployment
-- Test thoroughly on testnets first
+- Always verify chain IDs before transactions (Base: 8453)
+- Double-check network before deployment
+- Test thoroughly on local network first
 
 ---
 
-*Last Updated: 2025-11-20*  
+*Last Updated: 2025-11-25*  
 *Configuration Version: 1.0.0*  
-*Networks: 5 (1 local, 2 testnet, 2 mainnet)*
+*Networks: 2 (1 local, 1 mainnet)*

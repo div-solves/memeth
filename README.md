@@ -10,7 +10,7 @@ MEMETH is a revolutionary platform that enables meme culture exposure without th
 
 - ✅ **All value stays in ETH** - No fake tokens that can be rugpulled
 - ✅ **Virtual exposure only** - Mathematical modeling instead of token trading
-- ✅ **Transparent settlements** - Everything happens on L1
+- ✅ **Transparent settlements** - Everything on-chain on Base
 - ✅ **No bonding curves** - No manipulated pricing mechanisms
 - ✅ **No liquidity pools** - Nothing to drain or exploit
 - ✅ **Security first** - Honest, fair, and transparent
@@ -19,17 +19,13 @@ MEMETH is a revolutionary platform that enables meme culture exposure without th
 
 ### Smart Contracts (`/contracts`)
 
-**MemethTreasury.sol**
-- L1 settlement layer
+**MemethPlatform.sol**
+- Base mainnet deployment
 - Holds all ETH deposits
 - Processes position settlements
-- Minimalistic and secure
-
-**MemeRegistry.sol**
 - Tracks meme metadata
 - NO token creation
-- Immutable cultural data
-- Creation fee mechanism
+- Minimalistic and secure
 
 ### Offchain Engine (`/engine`)
 
@@ -110,7 +106,7 @@ npm run build
 
 ```bash
 # Test smart contracts
-npm run test:contracts
+npm test
 
 # Type check
 npm run type-check
@@ -167,15 +163,14 @@ When users close positions, P&L is calculated and settled in ETH through the L1 
 
 - **No token contracts** - Can't be exploited or rugpulled
 - **No liquidity pools** - Nothing to drain
-- **L1 settlement** - Maximum security and transparency
+- **Base L2 settlement** - Fast, secure, and low-cost transactions
 - **Minimalistic contracts** - Less code = less attack surface
 - **No admin keys for funds** - User funds are always safe
 - **Transparent accounting** - All balances visible on-chain
 
 ## 🌍 Network Support
 
-- **L1 (Ethereum)** - Treasury and final settlement
-- **L2 (Base, Arbitrum, Optimism)** - User interactions and social layer
+- **Base Mainnet** - Primary deployment for optimal user experience and low gas costs
 
 ## 🚢 Deployment
 
@@ -225,17 +220,20 @@ For detailed deployment instructions, see [frontend/README.md](./frontend/README
 
 ### Contract Deployment
 
-Smart contracts can be deployed to various networks:
+Smart contracts can be deployed to Base mainnet:
 
 ```bash
-# Deploy to Sepolia testnet
-npm run deploy:sepolia
+# Deploy to Base mainnet
+npm run deploy:baseMainnet
 
-# Deploy to Base Sepolia testnet
-npm run deploy:baseSepolia
+# Verify on Basescan
+npm run verify:baseMainnet
 
-# Deploy to local Hardhat network
-npm run deploy:local
+# Console on Base mainnet
+npm run console:baseMainnet
+
+# For local testing
+npm run node
 ```
 
 ## 📊 Roadmap
