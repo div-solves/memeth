@@ -15,10 +15,10 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -36,5 +36,8 @@ jobs:
     - name: Run tests
       run: npm test
     
+    - name: Install frontend dependencies
+      run: cd frontend && npm ci
+    
     - name: Build frontend
-      run: npm run build
+      run: cd frontend && npm run build
