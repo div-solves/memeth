@@ -226,8 +226,8 @@ Smart contracts can be deployed to Base mainnet:
 # Deploy to Base mainnet
 npm run deploy:baseMainnet
 
-# Verify on Basescan
-npm run verify:baseMainnet
+# Verify on Basescan (replace <ADDRESS> with your deployed contract address)
+npx hardhat verify --network base <ADDRESS>
 
 # Console on Base mainnet
 npm run console:baseMainnet

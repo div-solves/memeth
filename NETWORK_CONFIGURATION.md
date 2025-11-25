@@ -125,8 +125,8 @@ npx hardhat run scripts/deploy.js --network hardhat
 # Deploy to Base mainnet
 npm run deploy:baseMainnet
 
-# Verify on Basescan
-npm run verify:baseMainnet
+# Verify on Basescan (replace <ADDRESS> with deployed contract address)
+npx hardhat verify --network base <ADDRESS>
 
 # Console on Base mainnet
 npm run console:baseMainnet

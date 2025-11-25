@@ -103,7 +103,7 @@ Network: base
 Block Explorer: https://basescan.org/address/0x...
 
 Next steps:
-1. Verify contract: npm run verify:baseMainnet
+1. Verify contract: npx hardhat verify --network base <CONTRACT_ADDRESS>
 2. Interact with contract: npm run console:baseMainnet
 3. Update frontend/.env with: NEXT_PUBLIC_CONTRACT_ADDRESS_BASE=0x...
 ============================================================
@@ -121,8 +121,10 @@ Next steps:
 ### Step 3: Verify Contract (Required)
 
 ```bash
-npm run verify:baseMainnet
+npx hardhat verify --network base <CONTRACT_ADDRESS>
 ```
+
+Replace `<CONTRACT_ADDRESS>` with the deployed contract address from Step 2.
 
 **Note**: You need your Basescan API key in `.env` for verification.
 

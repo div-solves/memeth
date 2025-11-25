@@ -40,8 +40,10 @@ npm run deploy:baseMainnet
 
 ### 5. Verify Contract
 ```bash
-npm run verify:baseMainnet
+npx hardhat verify --network base <CONTRACT_ADDRESS>
 ```
+
+Replace `<CONTRACT_ADDRESS>` with your deployed address from step 4.
 
 ### 6. Update Frontend Config
 Edit `frontend/.env.local`:
@@ -76,7 +78,7 @@ npm run node                    # Start local Hardhat node
 
 ### Verification
 ```bash
-npm run verify:baseMainnet      # Verify on Basescan
+npx hardhat verify --network base <CONTRACT_ADDRESS>  # Verify on Basescan
 ```
 
 ### Testing
@@ -154,7 +156,7 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=
 - [ ] Created `.env` with private key and API keys
 - [ ] Have Base mainnet ETH
 - [ ] Deployed to Base mainnet (`npm run deploy:baseMainnet`)
-- [ ] Verified contract (`npm run verify:baseMainnet`)
+- [ ] Verified contract (`npx hardhat verify --network base <ADDRESS>`)
 - [ ] Updated `frontend/.env.local` with contract address
 - [ ] Got WalletConnect Project ID
 - [ ] Started frontend (`npm run dev`)

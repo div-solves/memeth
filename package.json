@@ -12,7 +12,6 @@
     "test": "hardhat test",
     "compile:contracts": "hardhat compile",
     "deploy:baseMainnet": "hardhat run scripts/deploy.js --network base",
-    "verify:baseMainnet": "hardhat verify --network base",
     "console:baseMainnet": "hardhat console --network base",
     "node": "hardhat node"
   },
