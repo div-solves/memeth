@@ -14,7 +14,7 @@ type Market = {
   exposure: number[];
 };
 
-const markets: Market[] = [
+const MOCK_MARKETS: Market[] = [
   {
     id: 'doge-energy',
     name: 'DOGE Energy',
@@ -94,7 +94,7 @@ const markets: Market[] = [
   },
 ];
 
-const visionPillars = [
+const VISION_PILLARS = [
   'Creator economies with programmable narrative exposure',
   'AI-driven narrative analysis and signal routing',
   'Onchain reputation systems for trusted curators',
@@ -110,12 +110,12 @@ const sentimentColor: Record<Market['sentiment'], string> = {
 };
 
 export default function Home() {
-  const [selectedMarketId, setSelectedMarketId] = useState(markets[0].id);
+  const [selectedMarketId, setSelectedMarketId] = useState(MOCK_MARKETS[0].id);
   const [positionSide, setPositionSide] = useState<'Long' | 'Short'>('Long');
   const [sizeEth, setSizeEth] = useState(2.5);
 
   const selectedMarket = useMemo(
-    () => markets.find((market) => market.id === selectedMarketId) ?? markets[0],
+    () => MOCK_MARKETS.find((market) => market.id === selectedMarketId) ?? MOCK_MARKETS[0],
     [selectedMarketId]
   );
 
@@ -217,12 +217,14 @@ export default function Home() {
 
             <div className="demo-grid">
               <aside className="market-list" aria-label="Narrative markets">
-                {markets.map((market) => {
+                {MOCK_MARKETS.map((market) => {
                   const active = selectedMarket.id === market.id;
                   return (
                     <button
                       key={market.id}
+                      type="button"
                       className={`market-row ${active ? 'active' : ''}`}
+                      aria-pressed={active}
                       onClick={() => setSelectedMarketId(market.id)}
                     >
                       <div>
@@ -292,6 +294,7 @@ export default function Home() {
                     max={10}
                     step={0.1}
                     value={sizeEth}
+                    aria-label="Position size in ETH from 0.5 to 10"
                     onChange={(event) => setSizeEth(Number(event.target.value))}
                   />
 
@@ -348,7 +351,7 @@ export default function Home() {
               </p>
             </div>
             <div className="vision-grid">
-              {visionPillars.map((pillar) => (
+              {VISION_PILLARS.map((pillar) => (
                 <article key={pillar} className="vision-card">{pillar}</article>
               ))}
             </div>
