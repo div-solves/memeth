@@ -1,8 +1,15 @@
 # MEMETH Frontend
 
-> Virtual Meme Market Trading Platform
+> Public-facing MEMETH demo for virtualized narrative markets on Base
 
-A Next.js-based frontend for the MEMETH platform - enabling virtual memecoin trading without tokens, rugpulls, or scams.
+A Next.js-based frontend for the MEMETH platform — enabling narrative market exposure without deployable meme tokens, rugpulls, or scam launches.
+
+## Demo positioning
+
+The `/` landing experience now highlights MEMETH as:
+- **Narrative Markets. ETH Native.**
+- **No Rugs. No Scam Tokens.**
+- A virtual market system with shared ETH collateral and Base settlement
 
 ## 🎯 Features
 
