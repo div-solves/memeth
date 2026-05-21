@@ -1,6 +1,6 @@
 # 🚀 MEMETH Deployment Guide
 
-Complete guide for deploying MEMETH contracts and configuring the frontend.
+Complete guide for deploying MEMETH contracts to Base mainnet and configuring the frontend.
 
 ---
 
@@ -17,28 +17,18 @@ npm install
 cp .env.example .env
 cp frontend/.env.example frontend/.env.local
 
-# Edit .env and add your private key (test wallet only!)
+# Edit .env and add your private key (use a secure wallet with proper key management!)
 # Edit frontend/.env.local (we'll add contract addresses after deployment)
 ```
 
-### 3. Get Testnet ETH
+### 3. Get Base Mainnet ETH
 
-#### Sepolia ETH:
-- **Faucet 1**: https://sepoliafaucet.com
-- **Faucet 2**: https://www.alchemy.com/faucets/ethereum-sepolia
-- **Faucet 3**: https://faucets.chain.link/sepolia
+Ensure you have sufficient ETH on Base mainnet for deployment:
+- **Bridge ETH to Base**: https://bridge.base.org/deposit
+- Bridge from Ethereum L1 to Base L2
+- Deployment typically costs 0.001-0.01 ETH
 
-#### Base Sepolia ETH:
-1. First, get Sepolia ETH (above)
-2. Bridge to Base Sepolia: https://bridge.base.org/deposit
-3. Or use Base Sepolia faucet: https://portal.cdp.coinbase.com/products/faucet
-
-### 4. Get API Keys (Optional but Recommended)
-
-#### Etherscan API Key:
-- Visit: https://etherscan.io/apis
-- Create account and generate API key
-- Add to `.env`: `ETHERSCAN_API_KEY=your_key_here`
+### 4. Get API Keys (Required for Verification)
 
 #### Basescan API Key:
 - Visit: https://basescan.org/apis
@@ -55,19 +45,14 @@ cp frontend/.env.example frontend/.env.local
 
 ## 🔧 Network Configuration
 
-MEMETH uses a **hybrid L1/L2 architecture**:
+MEMETH is deployed on **Base mainnet** for optimal user experience:
 
-### L1 (Ethereum)
-- **Purpose**: Settlement layer
-- **Networks**: Mainnet (production), Sepolia (testnet)
-- **Use for**: Final ETH settlements, treasury
-- **Gas**: Higher
-
-### L2 (Base)
-- **Purpose**: User interaction layer
-- **Networks**: Base (production), Base Sepolia (testnet)
-- **Use for**: Position management, trading UI
-- **Gas**: Lower (~10-100x cheaper)
+### Base Mainnet
+- **Chain ID**: 8453
+- **RPC URL**: https://mainnet.base.org
+- **Block Explorer**: https://basescan.org
+- **Gas Costs**: ~10-100x cheaper than Ethereum L1
+- **Purpose**: All contract operations, position management, and trading
 
 ---
 
@@ -85,10 +70,10 @@ Compiled 3 Solidity files successfully
 
 ---
 
-### Step 2: Deploy to Sepolia (L1 Testnet)
+### Step 2: Deploy to Base Mainnet
 
 ```bash
-npx hardhat run scripts/deploy.js --network sepolia
+npm run deploy:baseMainnet
 ```
 
 **Expected output:**
@@ -96,16 +81,16 @@ npx hardhat run scripts/deploy.js --network sepolia
 ============================================================
 MEMETH Platform Deployment
 ============================================================
-Network: sepolia
+Network: base
 Deployer: 0x...
-Balance: 1.234 ETH
+Balance: 0.234 ETH
 ============================================================
 
 📦 Deploying MemethPlatform contract...
 ✅ MemethPlatform deployed to: 0xYourContractAddress
-📝 Deployment info saved to: deployments/sepolia.json
+📝 Deployment info saved to: deployments/base.json
 
-🪙 Adding initial memecoins for testing...
+🪙 Adding initial memecoins...
    ✓ Added DOGE (Dogecoin) at 0.0001 ETH
    ✓ Added SHIB (Shiba Inu) at 0.00001 ETH
    ✓ Added PEPE (Pepe) at 0.000001 ETH
@@ -114,50 +99,34 @@ Balance: 1.234 ETH
 ✅ Deployment Complete!
 ============================================================
 Contract Address: 0xYourContractAddress
-Network: sepolia
-Block Explorer: https://sepolia.etherscan.io/address/0x...
+Network: base
+Block Explorer: https://basescan.org/address/0x...
 
 Next steps:
-1. Verify contract: npx hardhat verify --network sepolia 0x...
-2. Interact with contract: npx hardhat console --network sepolia
-3. Update frontend/.env with: NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA=0x...
+1. Verify contract: npx hardhat verify --network base <CONTRACT_ADDRESS>
+2. Interact with contract: npm run console:baseMainnet
+3. Update frontend/.env with: NEXT_PUBLIC_CONTRACT_ADDRESS_BASE=0x...
 ============================================================
 ```
 
 **What happens:**
-1. Deploys MemethPlatform contract
-2. Adds 3 test memecoins (DOGE, SHIB, PEPE)
-3. Saves deployment info to `deployments/sepolia.json`
+1. Deploys MemethPlatform contract to Base mainnet
+2. Adds initial memecoins for testing
+3. Saves deployment info to `deployments/base.json`
 
 **Save the contract address!** You'll need it for the frontend.
 
 ---
 
-### Step 3: Deploy to Base Sepolia (L2 Testnet)
+### Step 3: Verify Contract (Required)
 
 ```bash
-npx hardhat run scripts/deploy.js --network baseSepolia
+npx hardhat verify --network base <CONTRACT_ADDRESS>
 ```
 
-**Expected output:** (similar to Step 2)
+Replace `<CONTRACT_ADDRESS>` with the deployed contract address from Step 2.
 
-**Save the contract address!**
-
----
-
-### Step 4: Verify Contracts (Optional but Recommended)
-
-#### Verify on Sepolia:
-```bash
-npx hardhat verify --network sepolia 0xYourContractAddress
-```
-
-#### Verify on Base Sepolia:
-```bash
-npx hardhat verify --network baseSepolia 0xYourContractAddress
-```
-
-**Note**: You need API keys in `.env` for verification.
+**Note**: You need your Basescan API key in `.env` for verification.
 
 **Expected output:**
 ```
@@ -165,22 +134,19 @@ Successfully submitted source code for contract
 contracts/MemethPlatform.sol:MemethPlatform at 0x...
 for verification on the block explorer. Waiting for verification result...
 
-Successfully verified contract MemethPlatform on Etherscan.
-https://sepolia.etherscan.io/address/0x...#code
+Successfully verified contract MemethPlatform on Basescan.
+https://basescan.org/address/0x...#code
 ```
 
 ---
 
-### Step 5: Update Frontend Configuration
+### Step 4: Update Frontend Configuration
 
-Edit `frontend/.env.local` and add your deployed contract addresses:
+Edit `frontend/.env.local` and add your deployed contract address:
 
 ```bash
-# From deployments/sepolia.json
-NEXT_PUBLIC_CONTRACT_ADDRESS_SEPOLIA=0xYourSepoliaContractAddress
-
-# From deployments/baseSepolia.json
-NEXT_PUBLIC_CONTRACT_ADDRESS_BASE_SEPOLIA=0xYourBaseSepoliaContractAddress
+# From deployments/base.json
+NEXT_PUBLIC_CONTRACT_ADDRESS_BASE=0xYourBaseMainnetContractAddress
 
 # WalletConnect Project ID (get from https://cloud.walletconnect.com)
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
@@ -188,7 +154,7 @@ NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
 
 ---
 
-### Step 6: Start Frontend
+### Step 5: Start Frontend
 
 ```bash
 cd frontend
@@ -197,9 +163,7 @@ npm run dev
 
 Visit: http://localhost:3000
 
-**Connect wallet** to either:
-- Sepolia (L1 Testnet)
-- Base Sepolia (L2 Testnet)
+**Connect wallet** to Base mainnet
 
 ---
 
@@ -207,12 +171,12 @@ Visit: http://localhost:3000
 
 ### 1. Connect Wallet
 - Click "Connect Wallet" in the UI
-- Select Sepolia or Base Sepolia network
+- Select Base mainnet network
 - Approve connection
 
 ### 2. Check Contract Info
 ```bash
-npx hardhat console --network sepolia
+npm run console:baseMainnet
 ```
 
 In the console:
@@ -247,33 +211,27 @@ await platform.memecoins("DOGE");
 ## 🚨 Common Issues & Solutions
 
 ### Issue 1: "Insufficient funds"
-**Solution**: Get more testnet ETH from faucets (see Prerequisites)
+**Solution**: Ensure you have enough ETH on Base mainnet. Bridge more from Ethereum L1.
 
 ### Issue 2: "Network not configured"
-**Solution**: Check that `hardhat.config.js` has the correct network settings and your `.env` has RPC URLs
+**Solution**: Check that `hardhat.config.js` has the correct Base network settings and your `.env` has `RPC_URL_BASE_MAINNET`
 
 ### Issue 3: "Private key not found"
 **Solution**: Ensure `DEPLOYER_PRIVATE_KEY` is set in `.env` (without 0x prefix)
 
 ### Issue 4: "Verification failed"
 **Solution**: 
-- Ensure API keys are set in `.env`
+- Ensure `BASESCAN_API_KEY` is set in `.env`
 - Wait 1-2 minutes after deployment before verifying
 - Check that the contract address is correct
 
-### Issue 5: "Cannot connect wallet to Sepolia"
+### Issue 5: "Cannot connect wallet to Base"
 **Solution**:
-- Add Sepolia network to your wallet manually
-- Chain ID: 11155111
-- RPC: https://ethereum-sepolia-rpc.publicnode.com
-- Block Explorer: https://sepolia.etherscan.io
-
-### Issue 6: "Cannot connect wallet to Base Sepolia"
-**Solution**:
-- Add Base Sepolia network to your wallet manually
-- Chain ID: 84532
-- RPC: https://sepolia.base.org
-- Block Explorer: https://sepolia.basescan.org
+- Add Base network to your wallet manually
+- Chain ID: 8453
+- RPC: https://mainnet.base.org
+- Block Explorer: https://basescan.org
+- Most modern wallets have Base pre-configured
 
 ---
 
@@ -282,26 +240,19 @@ await platform.memecoins("DOGE");
 ### Before Deployment
 - [ ] Installed all dependencies (`npm install`)
 - [ ] Created `.env` file with private key
-- [ ] Have testnet ETH (Sepolia + Base Sepolia)
-- [ ] (Optional) Have API keys for verification
+- [ ] Have sufficient ETH on Base mainnet
+- [ ] Have Basescan API key for verification
 
-### Sepolia Deployment
+### Base Mainnet Deployment
 - [ ] Compiled contracts successfully
-- [ ] Deployed to Sepolia
+- [ ] Deployed to Base mainnet
 - [ ] Contract address saved
-- [ ] (Optional) Verified on Etherscan
-- [ ] Tested basic functions in console
-
-### Base Sepolia Deployment
-- [ ] Deployed to Base Sepolia
-- [ ] Contract address saved
-- [ ] (Optional) Verified on Basescan
+- [ ] Verified on Basescan
 - [ ] Tested basic functions in console
 
 ### Frontend Setup
 - [ ] Created `frontend/.env.local`
-- [ ] Added Sepolia contract address
-- [ ] Added Base Sepolia contract address
+- [ ] Added Base mainnet contract address
 - [ ] Added WalletConnect Project ID
 - [ ] Started frontend (`npm run dev`)
 - [ ] Connected wallet successfully
@@ -309,52 +260,35 @@ await platform.memecoins("DOGE");
 
 ---
 
-## 🎯 Production Deployment (Later!)
-
-⚠️ **DO NOT deploy to mainnet yet!** Complete testnet testing first.
-
-When ready for production:
+## 🎯 Production Best Practices
 
 ### 1. Security Audit
-- Conduct formal security audit
+- Conduct formal security audit before launch
 - Fix all critical and high issues
 - Get sign-off from auditors
 
-### 2. Mainnet Deployment
-
-#### Deploy to Ethereum Mainnet (L1):
-```bash
-npx hardhat run scripts/deploy.js --network mainnet
-```
-
-#### Deploy to Base (L2):
-```bash
-npx hardhat run scripts/deploy.js --network base
-```
-
-### 3. Setup Multi-Sig
+### 2. Setup Multi-Sig
 - Transfer ownership to multi-sig wallet (e.g., Gnosis Safe)
 - Require 2/3 or 3/5 signatures for admin actions
+- Use Gnosis Safe on Base: https://app.safe.global
 
-### 4. Verify Contracts
-```bash
-npx hardhat verify --network mainnet 0xYourAddress
-npx hardhat verify --network base 0xYourAddress
-```
+### 3. Monitoring
+- Set up contract monitoring and alerts
+- Monitor transaction volume and gas usage
+- Track position metrics and platform health
 
-### 5. Update Frontend
+### 4. Update Frontend
 - Set production contract addresses
-- Update environment to production
-- Enable mainnet networks in UI
+- Configure production environment
+- Enable Base mainnet in wallet connection
 
 ---
 
 ## 📚 Additional Resources
 
 ### Network Documentation
-- **Ethereum Sepolia**: https://sepolia.dev
 - **Base**: https://docs.base.org
-- **Base Sepolia**: https://docs.base.org/network-information
+- **Base Network Information**: https://docs.base.org/network-information
 
 ### Development Tools
 - **Hardhat**: https://hardhat.org/docs
@@ -362,15 +296,10 @@ npx hardhat verify --network base 0xYourAddress
 - **Wagmi**: https://wagmi.sh
 - **Viem**: https://viem.sh
 
-### Faucets & Bridges
-- **Sepolia Faucet**: https://sepoliafaucet.com
+### Bridges
 - **Base Bridge**: https://bridge.base.org
-- **Base Faucet**: https://portal.cdp.coinbase.com/products/faucet
 
-### Block Explorers
-- **Sepolia**: https://sepolia.etherscan.io
-- **Base Sepolia**: https://sepolia.basescan.org
-- **Mainnet**: https://etherscan.io
+### Block Explorer
 - **Base**: https://basescan.org
 
 ---
@@ -383,6 +312,6 @@ npx hardhat verify --network base 0xYourAddress
 
 ---
 
-*Last Updated: 2025-11-20*  
+*Last Updated: 2025-11-25*  
 *Version: 1.0.0*  
-*Status: Testnet Ready*
+*Status: Base Mainnet Ready*

@@ -9,17 +9,11 @@
     "start": "cd frontend && npm start",
     "lint": "eslint . --ext .ts,.tsx",
     "type-check": "tsc --noEmit",
-    "test": "jest",
+    "test": "hardhat test",
     "compile:contracts": "hardhat compile",
-    "test:contracts": "hardhat test",
-    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
-    "deploy:baseSepolia": "hardhat run scripts/deploy.js --network baseSepolia",
-    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
-    "verify:sepolia": "hardhat verify --network sepolia",
-    "verify:baseSepolia": "hardhat verify --network baseSepolia",
-    "node": "hardhat node",
-    "console:sepolia": "hardhat console --network sepolia",
-    "console:baseSepolia": "hardhat console --network baseSepolia"
+    "deploy:baseMainnet": "hardhat run scripts/deploy.js --network base",
+    "console:baseMainnet": "hardhat console --network base",
+    "node": "hardhat node"
   },
   "keywords": [
     "ethereum",

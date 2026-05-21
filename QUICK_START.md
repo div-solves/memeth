@@ -21,7 +21,10 @@ npm install
 # 2. Compile smart contracts
 npm run compile:contracts
 
-# 3. Start the frontend
+# 3. Run tests
+npm test
+
+# 4. Start the frontend
 cd frontend
 npm run dev
 ```
@@ -107,12 +110,6 @@ closePosition(positionId)
 
 ### Test Smart Contracts
 ```bash
-npm run test:contracts
-```
-
-### Test Engine Functions
-```bash
-# In engine directory
 npm test
 ```
 
@@ -121,21 +118,29 @@ npm test
 npm run type-check
 ```
 
+### Lint Code
+```bash
+npm run lint
+```
+
 ## 🛠️ Development Tools
 
 ### Useful Commands
 ```bash
-# Lint code
-npm run lint
-
 # Build frontend
-cd frontend && npm run build
+npm run build
 
 # Run local Hardhat node
-npx hardhat node
+npm run node
 
-# Deploy contracts locally
-npx hardhat run scripts/deploy.js --network localhost
+# Deploy to Base mainnet
+npm run deploy:baseMainnet
+
+# Verify on Basescan (replace <ADDRESS> with deployed contract address)
+npx hardhat verify --network base <ADDRESS>
+
+# Console on Base mainnet
+npm run console:baseMainnet
 ```
 
 ## 📚 Learn More
