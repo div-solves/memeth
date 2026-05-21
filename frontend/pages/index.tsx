@@ -294,7 +294,6 @@ export default function Home() {
                     max={10}
                     step={0.1}
                     value={sizeEth}
-                    aria-label="Position size in ETH from 0.5 to 10"
                     onChange={(event) => setSizeEth(Number(event.target.value))}
                   />
 
